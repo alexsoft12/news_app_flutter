@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_flutter_app/services/news_service.dart';
 import 'package:provider/provider.dart';
 
 class TabsScreen extends StatelessWidget {
@@ -41,6 +42,7 @@ class _Screens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigationModel = Provider.of<_NavigationModel>(context);
+    //final newsService = Provider.of<NewsService>(context);
 
     return PageView(
       controller: navigationModel.pageController,
