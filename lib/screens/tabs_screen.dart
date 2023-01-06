@@ -40,7 +40,10 @@ class _NavigatorBar extends StatelessWidget {
 class _Screens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final navigationModel = Provider.of<_NavigationModel>(context);
+
     return PageView(
+      controller: navigationModel.pageController,
       physics: NeverScrollableScrollPhysics(),
       children: [
         Container(
@@ -57,10 +60,16 @@ class _Screens extends StatelessWidget {
 class _NavigationModel with ChangeNotifier {
   int _currentScreen = 0;
 
+  final PageController _pageController = PageController();
+
+  PageController get pageController => _pageController;
+
   int get currentScreen => _currentScreen;
 
   set currentScreen(int value) {
     _currentScreen = value;
+    _pageController.animateToPage(value,
+        duration: const Duration(milliseconds: 250), curve: Curves.easeOutSine);
     notifyListeners();
   }
 }
