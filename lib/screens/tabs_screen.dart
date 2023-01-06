@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TabsScreen extends StatelessWidget {
   const TabsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _Screens(),
-      bottomNavigationBar: _NavigatorBar(),
+    return ChangeNotifierProvider(
+      create: (_) => _NavigationModel(),
+      child: Scaffold(
+        body: _Screens(),
+        bottomNavigationBar: _NavigatorBar(),
+      ),
     );
   }
 }
@@ -15,8 +19,10 @@ class TabsScreen extends StatelessWidget {
 class _NavigatorBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final navigationModel = Provider.of<_NavigationModel>(context);
     return BottomNavigationBar(
-      currentIndex: 0,
+      currentIndex: navigationModel.currentScreen,
+      onTap: (i) => navigationModel.currentScreen = i,
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
@@ -45,5 +51,16 @@ class _Screens extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class _NavigationModel with ChangeNotifier {
+  int _currentScreen = 0;
+
+  int get currentScreen => _currentScreen;
+
+  set currentScreen(int value) {
+    _currentScreen = value;
+    notifyListeners();
   }
 }
