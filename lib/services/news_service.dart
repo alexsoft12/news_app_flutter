@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:news_flutter_app/model/category_model.dart';
 import 'package:news_flutter_app/model/news_models.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,6 +11,17 @@ const String _country = 'ar';
 
 class NewsService with ChangeNotifier {
   List<Article> topHeadlines = [];
+  List<Category> categories = [
+    Category(icon: FontAwesomeIcons.building, name: 'business'),
+    Category(icon: FontAwesomeIcons.tv, name: 'entertainment'),
+    Category(icon: FontAwesomeIcons.addressCard, name: 'general'),
+    Category(icon: FontAwesomeIcons.headSideVirus, name: 'health'),
+    Category(icon: FontAwesomeIcons.vials, name: 'science'),
+    Category(icon: FontAwesomeIcons.football, name: 'sports'),
+    Category(icon: FontAwesomeIcons.computer, name: 'technology'),
+  ];
+
+
 
   NewsService() {
     getTopHeadlines();
@@ -15,7 +29,7 @@ class NewsService with ChangeNotifier {
 
   getTopHeadlines() async {
     final url =
-        Uri.parse("$_urlNews/top-headlines?apiKey=$_apiKey&country=$_country");
+    Uri.parse("$_urlNews/top-headlines?apiKey=$_apiKey&country=$_country");
     final resp = await http.get(url);
 
     final NewsResponse newsResponse = newsResponseFromJson(resp.body);
