@@ -11,6 +11,7 @@ const String _country = 'ar';
 class NewsService with ChangeNotifier {
   List<Article> topHeadlines = [];
   String _selectedCategory = 'business';
+  bool _isLoading = true;
 
   List<Category> categories = [
     Category(icon: FontAwesomeIcons.building, name: 'business'),
@@ -45,7 +46,10 @@ class NewsService with ChangeNotifier {
   }
 
   getArticlesByCategory(String category) async {
+
     if (categoryArticles[category]!.isNotEmpty) {
+      _isLoading = false;
+      notifyListeners();
       return categoryArticles[category];
     }
     final url = Uri.parse(
@@ -56,6 +60,7 @@ class NewsService with ChangeNotifier {
 
     categoryArticles[category]!.addAll(newsResponse.articles);
 
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -63,7 +68,14 @@ class NewsService with ChangeNotifier {
 
   set selectedCategory(String value) {
     _selectedCategory = value;
+    _isLoading = true;
     getArticlesByCategory(value);
     notifyListeners();
+  }
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
   }
 }

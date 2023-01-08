@@ -17,11 +17,17 @@ class Tab2Screen extends StatelessWidget {
         body: Column(
           children: [
             _CategoryLists(),
-            Expanded(
-              child: NewsList(
-                articles: newsService.getArticlesBySelectedCategory!,
-              ),
-            ),
+            (!newsService.isLoading)
+                ? Expanded(
+                    child: NewsList(
+                      articles: newsService.getArticlesBySelectedCategory,
+                    ),
+                  )
+                : const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_flutter_app/screens/tab1_screen.dart';
 import 'package:news_flutter_app/screens/tab2_screen.dart';
+import 'package:news_flutter_app/services/news_service.dart';
 import 'package:provider/provider.dart';
 
 class TabsScreen extends StatelessWidget {
@@ -22,10 +23,16 @@ class _NavigatorBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigationModel = Provider.of<_NavigationModel>(context);
+    final newsService = Provider.of<NewsService>(context);
     return BottomNavigationBar(
       currentIndex: navigationModel.currentScreen,
-      onTap: (i) => navigationModel.currentScreen = i,
-      items: [
+      onTap: (i) {
+        if (i == 1) {
+          newsService.selectedCategory = 'business';
+        }
+        navigationModel.currentScreen = i;
+      },
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.person_outline),
           label: 'Para ti',
@@ -50,7 +57,7 @@ class _Screens extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         Tab1Screen(),
-        Tab2Screen(),
+        const Tab2Screen(),
       ],
     );
   }
