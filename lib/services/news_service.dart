@@ -31,6 +31,9 @@ class NewsService with ChangeNotifier {
     });
   }
 
+  List<Article> get getArticlesBySelectedCategory =>
+      categoryArticles[selectedCategory]!;
+
   getTopHeadlines() async {
     final url =
         Uri.parse("$_urlNews/top-headlines?apiKey=$_apiKey&country=$_country");
@@ -42,8 +45,7 @@ class NewsService with ChangeNotifier {
   }
 
   getArticlesByCategory(String category) async {
-
-    if (categoryArticles[category]!.isNotEmpty){
+    if (categoryArticles[category]!.isNotEmpty) {
       return categoryArticles[category];
     }
     final url = Uri.parse(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_flutter_app/model/category_model.dart';
 import 'package:news_flutter_app/services/news_service.dart';
 import 'package:news_flutter_app/theme/theme_dark.dart';
+import 'package:news_flutter_app/widgets/news_list.dart';
 import 'package:provider/provider.dart';
 
 class Tab2Screen extends StatelessWidget {
@@ -9,12 +10,17 @@ class Tab2Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final newsService = Provider.of<NewsService>(context);
+
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
+            _CategoryLists(),
             Expanded(
-              child: _CategoryLists(),
+              child: NewsList(
+                articles: newsService.getArticlesBySelectedCategory!,
+              ),
             ),
           ],
         ),
@@ -29,22 +35,26 @@ class _CategoryLists extends StatelessWidget {
     final List<Category> categories =
         Provider.of<NewsService>(context).categories;
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      itemCount: categories.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              _CategoryButton(category: categories[index]),
-              const SizedBox(height: 5),
-              Text(toFirstUppercase(categories[index].name)),
-            ],
-          ),
-        );
-      },
+    return Container(
+      width: double.infinity,
+      height: 80,
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: [
+                _CategoryButton(category: categories[index]),
+                const SizedBox(height: 5),
+                Text(toFirstUppercase(categories[index].name)),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -78,7 +88,7 @@ class _CategoryButton extends StatelessWidget {
           category.icon,
           color: (category.name == newsService.selectedCategory)
               ? myTheme.colorScheme.secondary
-              :  Colors.black54,
+              : Colors.black54,
         ),
       ),
     );
