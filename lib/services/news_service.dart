@@ -14,7 +14,6 @@ class NewsService with ChangeNotifier {
   }
 
   getTopHeadlines() async {
-    print('Opteniendo datos ...! ');
     final url =
         Uri.parse("$_urlNews/top-headlines?apiKey=$_apiKey&country=$_country");
     final resp = await http.get(url);
