@@ -37,13 +37,45 @@ class _CategoryLists extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: Column(
             children: [
-              Icon(categories[index].icon),
+              _CategoryButton(category: categories[index]),
               const SizedBox(height: 5),
-              Text(categories[index].name),
+              Text(toFirstUppercase(categories[index].name)),
             ],
           ),
         );
       },
+    );
+  }
+
+  String toFirstUppercase(String text) {
+    return '${text[0].toUpperCase()}${text.substring(1)}';
+  }
+}
+
+class _CategoryButton extends StatelessWidget {
+  final Category category;
+
+  const _CategoryButton({super.key, required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        print(category.name);
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+        ),
+        child: Icon(
+          category.icon,
+          color: Colors.black54,
+        ),
+      ),
     );
   }
 }
